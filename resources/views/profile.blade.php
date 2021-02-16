@@ -43,7 +43,7 @@
                     <p>{{ 'Joined: ' . $user->created_at }}</p>
                     <p>{{ 'Products posted:' . $productCount }}</p>
                     <a class="btn btn-primary" href="/users/{{ $user->id }}/products" role="button">View Products</a>
-                    <a class="btn btn-secondary" href="" role="button">Change Password</a>
+                    <a class="btn btn-secondary" href="/change-password" role="button">Change Password</a>
                     <form action="/users/{{ $user->id }}/delete" method="POST">
                         @csrf
                         @method('delete')

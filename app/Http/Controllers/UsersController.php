@@ -31,17 +31,6 @@ class UsersController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -94,7 +83,7 @@ class UsersController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email',
-            'phone' => 'nullable',
+            'phone' => 'required',
         ]);
 
         $user = User::where('id', $id)->update([
@@ -105,7 +94,7 @@ class UsersController extends Controller
 
         $url = '/users/' . $id;
 
-        return redirect($url);
+        return redirect($url)->with('status', 'Profile Changed Successfully!');
     }
 
     public function changeAdmin(Request $request, $id)
@@ -116,7 +105,14 @@ class UsersController extends Controller
             'admin' => !$user->admin
         ]);
 
-        return redirect('/users');
+        if ($user->admin){
+            $message = 'Admin status given to user "' . $user->name . '"';
+        }
+        else{
+            $message = 'Admin Status Taken From User "' . $user->name . '"';
+        };
+
+        return redirect('/users')->with('status', $message);
     }
 
     /**
@@ -131,6 +127,9 @@ class UsersController extends Controller
 
         $user->delete();
 
-        return redirect('/users');
+        if (Auth::id() != $id) {
+            return redirect('/users')->with('error', 'User Removed!');
+        }
+        return redirect('/login')->with('error', 'Account Deleted!');
     }
 }

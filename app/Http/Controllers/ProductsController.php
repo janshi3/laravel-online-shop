@@ -67,7 +67,7 @@ class ProductsController extends Controller
             $request->image->move(public_path('storage/product_images'), $img_name);
         }
 
-        return redirect('/products');
+        return redirect('/products')->with('status', 'Product Created Successfully!');
     }
 
     /**
@@ -92,7 +92,7 @@ class ProductsController extends Controller
         $products = Product::where('product_name', 'like', '%' . $string . '%')->get();
 
         return view('products', [
-            'products' => $products
+            'products' => $products,
         ]);
     }
 
@@ -148,7 +148,7 @@ class ProductsController extends Controller
             'user_id' => Auth::id(),
         ]);
 
-        return redirect('/products');
+        return redirect('/products')->with('status', 'Product Information Changed Successfully!');
     }
 
     /**

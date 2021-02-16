@@ -20,6 +20,8 @@ Auth::routes();
 
 Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('name');
 
+Route::get('back', [App\Http\Controllers\HomeController::class, 'index'])->name('name');
+
 Route::get('/products', [App\Http\Controllers\ProductsController::class, 'index']);
 
 Route::get('/products/search/{string}', [App\Http\Controllers\ProductsController::class, 'search']);
@@ -47,4 +49,8 @@ Route::get('/users/{id}/products', [App\Http\Controllers\UsersController::class,
 Route::post('/users/{id}/admin', [App\Http\Controllers\UsersController::class, 'changeAdmin'])->where(['id' => '[0-9]+']);;
 
 Route::delete('/users/{id}/delete', [App\Http\Controllers\UsersController::class, 'destroy'])->where(['id' => '[0-9]+']);;
+
+Route::get('/change-password', [App\Http\Controllers\Auth\ChangePasswordController::class, 'index']);
+
+Route::post('/change-password', [App\Http\Controllers\Auth\ChangePasswordController::class, 'store']);
 
