@@ -11,6 +11,21 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
+    <script>
+        function checkKey(){
+            if(event.key === 'Enter') {
+                search();
+            }
+        }
+
+        function search(){
+            var string = document.getElementById('search_input').value;
+            var form = document.getElementById('search');
+            form.action = "/products/search/" + string;
+            form.submit();
+
+        }
+    </script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -33,9 +48,28 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
-
+                        <li class="nav-item">
+                            <a class="nav-link" href="/products">All Products</a>
+                        </li>
+                        @guest
+                        @else
+                            <li class="nav-item">
+                                <a class="nav-link" href="/users/{{ Auth::id() }}/products">My Products</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-success" href="/products/add">Add Product</a>
+                            </li>
+                        @endguest
                     </ul>
 
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <form id="search" action="/products/search" method="get">
+                                <input id="search_input" type="text" placeholder="Search.." onkeydown="checkKey()">
+                                <button class="btn btn-secondary" type="button" onclick="search()">Search</button>
+                            </form>
+                        </li>
+                    </ul>
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <!-- Authentication Links -->
@@ -52,12 +86,18 @@
                                 </li>
                             @endif
                         @else
+                            @if (Auth::user()->admin == 1)
+                                <li class="nav-item">
+                                    <a class="nav-link" href="/users">Users</a>
+                                </li>
+                            @endif
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                 </a>
 
                                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                                    <a class="dropdown-item" href="/users/{{ Auth::id() }}">Profile</a>
                                     <a class="dropdown-item" href="{{ route('logout') }}"
                                        onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">

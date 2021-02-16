@@ -13,7 +13,7 @@ class Product extends Model
 
     protected $primaryKey = 'id';
 
-    protected $fillable = ['product_name', 'description', 'price'];
+    protected $fillable = ['product_name', 'description', 'price', 'user_id', 'image_name'];
 
     public function user()
     {
